@@ -68,7 +68,7 @@ if st.button("Calcular"):
     df_resultados = pd.DataFrame({
         "Adelanto ($)": adelantos,
         "Equiv. Cuotas": [round(a / cuota_mensual, 2) for a in adelantos],
-        "Cuotas Nuevas": [cuotas_base - ah + cuotas_base - (cuotas_base - ah) for ah in cuotas_ahorradas_acumuladas],
+        "Cuotas Nuevas": [cuotas_base - ah for ah in cuotas_ahorradas_acumuladas],
         "Cuotas Ahorradas": cuotas_ahorradas_acumuladas,
         "Interés Ahorrado ($)": [round(i, 2) for i in interes_ahorrado],
         "Eficiencia ($ Interés / $ Adelanto)": eficiencia
