@@ -1,6 +1,7 @@
 
 import streamlit as st
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def calcular_adelanto(monto_credito, tasa_mensual, cuota_mensual, adelanto, cuota_adelanto):
     saldo = monto_credito
@@ -62,6 +63,25 @@ if st.button("Calcular"):
     cuotas_marginales = [cuotas_ahorradas_acumuladas[0]]
     for i in range(1, len(cuotas_ahorradas_acumuladas)):
         cuotas_marginales.append(cuotas_ahorradas_acumuladas[i] - cuotas_ahorradas_acumuladas[i - 1])
+
+    # Mostrar tabla de simulación incremental
+    df_resultados = pd.DataFrame({
+        "Adelanto ($)": adelantos,
+        "Equiv. Cuotas": [round(a / cuota_mensual, 2) for a in adelantos],
+        "Cuotas Nuevas": [cuotas_base - ah + cuotas_base - (cuotas_base - ah) for ah in cuotas_ahorradas_acumuladas],
+        "Cuotas Ahorradas": cuotas_ahorradas_acumuladas,
+        "Interés Ahorrado ($)": [round(i, 2) for i in interes_ahorrado],
+        "Eficiencia ($ Interés / $ Adelanto)": eficiencia
+    })
+
+    st.dataframe(df_resultados.style.format({
+        "Adelanto ($)": "{:,.0f}",
+        "Equiv. Cuotas": "{:.2f}",
+        "Cuotas Nuevas": "{:.0f}",
+        "Cuotas Ahorradas": "{:.0f}",
+        "Interés Ahorrado ($)": "${:,.2f}",
+        "Eficiencia ($ Interés / $ Adelanto)": "{:.4f}"
+    }))
 
     # Gráfico 1: Interés ahorrado + cuotas marginales
     fig, ax1 = plt.subplots(figsize=(10, 5))
