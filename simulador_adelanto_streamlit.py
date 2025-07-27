@@ -29,14 +29,14 @@ st.title("💰 Simulador de Adelanto de Capital")
 st.markdown("Calculá cómo impacta adelantar capital sobre tu crédito hipotecario.")
 
 # Inputs
-adelanto_usuario = st.number_input("🔢 Ingresá el monto de capital a adelantar ($)", min_value=0.0, value=1000.0, step=500.0)
+adelanto_usuario = st.number_input("🔢 Ingresá el monto de capital a adelantar (en cantidad de UVAs)", min_value=0.0, value=1000.0, step=500.0)
 cuota_adelanto = st.number_input("📅 En qué cuota vas a hacer el adelanto", min_value=1, max_value=cuotas_originales, value=10)
 
 if st.button("Calcular"):
     cuotas_base, interes_base = calcular_adelanto(monto_credito, tasa_mensual, cuota_mensual, 0, 0)
     cuotas_nuevas, interes_nuevo = calcular_adelanto(monto_credito, tasa_mensual, cuota_mensual, adelanto_usuario, int(cuota_adelanto))
 
-    st.subheader("📊 Resultados del Adelanto Puntual")
+    st.subheader("📊 Resultados del adelanto simulado")
     st.markdown(f'''
     - **Cuotas originales**: {cuotas_base}  
     - **Cuotas luego del adelanto**: {cuotas_nuevas}  
@@ -46,7 +46,7 @@ if st.button("Calcular"):
     - **Ahorro en intereses**: ${interes_base - interes_nuevo:,.2f}
     ''')
 
-    st.subheader(f"📈 Simulación incremental en la cuota {cuota_adelanto}")
+    st.subheader(f"📈 Simulación de adelantos en intervalos de 1000 UVAs en la cuota {cuota_adelanto}")
     adelantos = list(range(1000, 41000, 1000))
     cuotas_ahorradas_acumuladas = []
     interes_ahorrado = []
